@@ -1,7 +1,16 @@
 @extends('layout.master')
 @section("title","Get All Articles")
 @section('content')
+    <br>
     <div class="col-md-10 offset-md-1">
+        <div id="search-div" class="col-md-4">
+            <form action="/search" method="POST">
+                @csrf
+                <input type="text" name="keyword" class="form-control" id="search-box">
+                <input type="submit" value="Search" class="btn btn-primary" id="search-button">
+                
+            </form>
+        </div>
         <div class="btn-group" id="add_btn">
             <a href="{{route('article.create')}}">
                 <input type="button" value="+ Add Article" class="btn btn-primary">
@@ -28,7 +37,11 @@
                             <a href="{{route('article.delete',[$article->id])}}"><input type="button" class="btn btn-danger" value="Delete"></a>
                         </td>
                     </tr>
+        
                 @endforeach
+                <tr>
+                     <td colspan="5" align="right">Total Record: <span>{{$count}}</span></td>
+                </tr>
             @endif
         </table>
         @if(!count($articles))

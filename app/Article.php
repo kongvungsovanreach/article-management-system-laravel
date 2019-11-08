@@ -7,9 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Article extends Model
 {
     public $timestamps = false;
-    public $fillable = [
-        "title","description","author"
-    ];
+    // public $fillable = [
+        // "title","description","author"
+        
+    // ];
+    public $guarded = ["_token"];
 
-    public $guard = ["title"];
+    // public $attributes = [
+    //     "description"=>"a description" 
+    // ];
+
 }
