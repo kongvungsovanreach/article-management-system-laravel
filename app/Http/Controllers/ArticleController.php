@@ -7,9 +7,11 @@ use App\Article;
 
 class ArticleController extends Controller{
     function index(){
+        $filter = "";
+        $filters = ["ID","Title","Description","Author"];
         $articles = Article::all();
         $count = Article::all()->count();
-        return view("index",compact("articles","count"))->with("success", "You have successfully get all the articles! Thanks!");
+        return view("index",compact("articles","count", "filter","filters"))->with("success", "You have successfully get all the articles! Thanks!");
     }
 
     function view($id){
@@ -22,8 +24,16 @@ class ArticleController extends Controller{
     }
 
     function insert(Request $request){
-        $inserted = Article::firstornew($request->except("_token"));
-        $inserted->save();
+        $article = new Article();
+        $article->fill($request->all());
+        // echo dd($article);
+        // $article -> title = $request->title;
+        // $article->description = $request->description;
+        // $article->author = $request->author;
+        $article -> save();
+
+
+
         return redirect()->route("article.all");
     }
 
@@ -39,6 +49,8 @@ class ArticleController extends Controller{
     }
 
     function edit($id, Request $request){
+        // $article = Article::find($id);
+        // $article->title = $request->title;
        
         Article::find($id)->update($request->all());
 
@@ -46,9 +58,12 @@ class ArticleController extends Controller{
     }
 
     function search(Request $request){
-        $articles = Article::where("title","like","%".$request->keyword."%")->get();
-        $count = Article::where("title","like","%".$request->keyword."%")->count();
-        return view("index", compact("articles","count"));
+        $filter =  $request->filter;
+        $filters = ["ID","Title","Description","Author"];
+        $keyword = $request->keyword;
+        $articles = Article::where($filter,"like","%".$keyword."%")->get();
+        $count = $articles->count();
+        return view("index", compact("articles","count","filters","filter","keyword"));
     }
 
     

@@ -6,7 +6,18 @@
         <div id="search-div" class="col-md-4">
             <form action="/search" method="POST">
                 @csrf
-                <input type="text" name="keyword" class="form-control" id="search-box">
+                <h1>{{$filter}}</h1>
+                <input type="text" value="{{isset($keyword)?$keyword:''}}" name="keyword" class="form-control" id="search-box">
+                <select name="filter" id="" class="form-control">
+                    @foreach($filters as $f)
+                        <option value="{{strtolower($f)}}" 
+                            @if($f == $filter)
+                                selected = "selected"
+
+                            @endif
+                        >{{$f}}</option>
+                    @endforeach
+                </select>
                 <input type="submit" value="Search" class="btn btn-primary" id="search-button">
                 
             </form>
